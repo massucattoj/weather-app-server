@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "ts-node src/app.ts",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
