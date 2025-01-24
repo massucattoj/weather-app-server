@@ -18,4 +18,8 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Weather App - Your daily info about weather :)')
 })
 
-export default app
+// Start server
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`)
+})
