@@ -2,6 +2,9 @@
 
 This project is a Node.js server that integrates with external APIs to fetch weather data and provide city search suggestions. It acts as a proxy to communicate with weather and city search services, offering users the ability to retrieve weather information based on city names, search terms, or coordinates.
 
+- Link to test:
+https://weather-app-front-seven.vercel.app/
+
 ## Features
 
 - **Weather Data Fetching**: Fetch weather data for a specific city or geographic coordinates.
