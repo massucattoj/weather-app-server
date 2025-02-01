@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from '../../src/app'
+import { server } from '../../src/server'
 import axios from 'axios'
 
 const mockCities = [
@@ -45,14 +45,14 @@ describe('GET /api/cities', () => {
       data: { data: mockCities },
     })
 
-    const response = await request(app).get('/api/cities?query=London')
+    const response = await request(server).get('/api/cities?query=London')
 
     expect(response.status).toBe(200)
     expect(response.body).toEqual(mockCities)
   })
 
   it('should return 400 if no query is provided', async () => {
-    const response = await request(app).get('/api/cities')
+    const response = await request(server).get('/api/cities')
 
     expect(response.status).toBe(400)
     expect(response.body.message).toBe('City or coordinates required')
@@ -61,7 +61,7 @@ describe('GET /api/cities', () => {
   it('should return 500 if the API key is missing', async () => {
     delete process.env.RAPID_API_KEY
 
-    const response = await request(app).get('/api/cities?query=London')
+    const response = await request(server).get('/api/cities?query=London')
 
     expect(response.status).toBe(500)
     expect(response.body.message).toBe('API key is missing')
@@ -75,7 +75,7 @@ describe('GET /api/cities', () => {
       new Error('Unexpected error'),
     )
 
-    const response = await request(app).get('/api/cities?query=London')
+    const response = await request(server).get('/api/cities?query=London')
 
     expect(response.status).toBe(500)
     expect(response.body.message).toBe('An unexpected error occurred')
@@ -88,7 +88,7 @@ describe('GET /api/cities', () => {
     const mockError = new Error('API request failed') as Error
     ;(axios.get as jest.Mock).mockRejectedValueOnce(mockError)
 
-    const response = await request(app).get('/api/cities?query=London')
+    const response = await request(server).get('/api/cities?query=London')
 
     expect(response.status).toBe(500)
     expect(response.body.message).toBe('An unexpected error occurred')

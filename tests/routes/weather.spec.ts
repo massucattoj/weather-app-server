@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from '../../src/app'
+import { server } from '../../src/server'
 import axios from 'axios'
 
 const mockWeatherData = {
@@ -40,12 +40,13 @@ jest.mock('axios')
 
 describe('GET /weather', () => {
   it('should return weather data when a valid city is provided', async () => {
+    process.env.PORT = '3000'
     // Adjust the mock response to match the correct structure
     ;(axios.get as jest.Mock).mockResolvedValueOnce({
       data: mockWeatherData,
     })
 
-    const response = await request(app).get('/api/weather?city=London')
+    const response = await request(server).get('/api/weather?city=London')
 
     expect(response.status).toBe(200)
     expect(response.body).toEqual(mockWeatherData)
@@ -57,7 +58,7 @@ describe('GET /weather', () => {
       data: mockWeatherData,
     })
 
-    const response = await request(app).get(
+    const response = await request(server).get(
       '/api/weather?lat=51.5074&lon=-0.1278',
     )
 
@@ -65,7 +66,7 @@ describe('GET /weather', () => {
     expect(response.body).toEqual(mockWeatherData)
   })
   it('should return 400 if both city and coordinates are missing', async () => {
-    const response = await request(app).get('/api/weather')
+    const response = await request(server).get('/api/weather')
 
     expect(response.status).toBe(400)
     expect(response.body.message).toBe('City or coordinates are required')
@@ -74,7 +75,7 @@ describe('GET /weather', () => {
   it('should return 500 if the API key is missing', async () => {
     delete process.env.OPEN_WEATHER_API_KEY
 
-    const response = await request(app).get('/api/weather?city=London')
+    const response = await request(server).get('/api/weather?city=London')
 
     expect(response.status).toBe(500)
     expect(response.body.message).toBe('API key is missing')
@@ -86,7 +87,7 @@ describe('GET /weather', () => {
       new Error('Unexpected error'),
     )
 
-    const response = await request(app).get('/api/weather?city=London')
+    const response = await request(server).get('/api/weather?city=London')
 
     expect(response.status).toBe(500)
     expect(response.body.message).toBe('An unexpected error occurred')
@@ -100,7 +101,7 @@ describe('GET /weather', () => {
     // Mock axios to reject with this error
     ;(axios.get as jest.Mock).mockRejectedValueOnce(mockError)
 
-    const response = await request(app).get('/api/weather?city=London')
+    const response = await request(server).get('/api/weather?city=London')
 
     expect(response.status).toBe(500)
     expect(response.body.message).toBe('An unexpected error occurred')
