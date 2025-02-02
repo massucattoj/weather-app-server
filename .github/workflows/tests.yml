@@ -26,7 +26,9 @@ jobs:
         run: npm install
 
       - name: Set environment variables
-        run: echo "OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}" >> $GITHUB_ENV
+        run: |
+          echo "OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}" >> $GITHUB_ENV
+          echo "RAPID_API_KEY=${{ secrets.RAPID_API_KEY }}" >> $GITHUB_ENV
 
       # Run tests
       - name: Run tests
