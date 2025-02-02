@@ -11,6 +11,7 @@ export const getCities = async (req: Request, res: Response) => {
     }
 
     const cities = await fetchCities(query as string)
+
     res.status(200).json(cities)
   } catch (error) {
     if (error instanceof ApiError) {
