@@ -1,0 +1,39 @@
+name: Unit tests pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm' # Cache npm dependencies to speed up builds
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set environment variables
+        run: |
+          echo "OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}" >> $GITHUB_ENV
+          echo "RAPID_API_KEY=${{ secrets.RAPID_API_KEY }}" >> $GITHUB_ENV
+
+      # Run tests
+      - name: Run tests
+        run: npm test
+
+      # (Optional) Run code coverage
+      - name: Run code coverage
+        run: npm test -- --coverage

@@ -4,6 +4,4 @@ build/
 .env
 .env.test
 
-package-lock.json
-
 coverage/
