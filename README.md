@@ -10,9 +10,13 @@ https://weather-app-front-seven.vercel.app/
 - **Weather Data Fetching**: Fetch weather data for a specific city or geographic coordinates.
 - **City Autocomplete**: Suggests city names as users type in the search field.
 - **Multiple API Endpoints**:
-  - `GET /weather?city={cityName}`: Fetch weather data for a specific city name.
-  - `GET /cities?query={searchTerm}`: Return a list of city suggestions based on a search term.
-  - `GET /weather?lat={latitude}&lon={longitude}`: Fetch weather data for a specific latitude/longitude (optional).
+  - `GET /api/weather?city={cityName}`: Fetch weather data for a specific city name.
+
+  - `GET /api/cities?query={searchTerm}`: Return a list of city suggestions based on a search term.
+
+  - `GET /api/weather?lat={latitude}&lon={longitude}`: Fetch weather data for a specific latitude/longitude (optional).
+  
+  - `GET /docs`: Api swagger
 - **Error Handling**: Handles API errors, timeouts
 
 
@@ -61,13 +65,14 @@ Make sure you have [Node.js](https://nodejs.org/en/) installed on your machine. 
 1. You can run the tests using Jest:
     ```bash
     npm run test
+    npm run test:watch
     ```
 
 ## Built with
 ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-007ACC?logo=typescript&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=fff&style=flat)
-
+![Express.js](https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white)
 
 
 ### Useful links
