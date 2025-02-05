@@ -7,13 +7,11 @@ import { ApiError } from '../utils/apiError'
 jest.mock('../services/cityService')
 const mockedFetchCities = fetchCities as jest.MockedFunction<typeof fetchCities>
 
-// tests
 describe('City Controller', () => {
   let req: Partial<Request>
   let res: Partial<Response>
 
   beforeEach(() => {
-    // Reset mocks and create fresh request/response objects
     jest.clearAllMocks()
     req = { query: {} }
     res = {
@@ -42,7 +40,7 @@ describe('City Controller', () => {
 
     expect(res.status).toHaveBeenCalledWith(400)
     expect(res.json).toHaveBeenCalledWith({
-      message: 'City or coordinates required',
+      message: 'Query parameter is required and must be a string',
     })
   })
 

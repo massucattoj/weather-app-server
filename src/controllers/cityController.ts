@@ -6,12 +6,14 @@ export const getCities = async (req: Request, res: Response) => {
   try {
     const { query } = req.query
 
-    if (!query) {
-      throw new ApiError(400, 'City or coordinates required')
+    if (!query || typeof query !== 'string') {
+      throw new ApiError(
+        400,
+        'Query parameter is required and must be a string',
+      )
     }
 
-    const cities = await fetchCities(query as string)
-
+    const cities = await fetchCities(query)
     res.status(200).json(cities)
   } catch (error) {
     if (error instanceof ApiError) {
