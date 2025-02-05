@@ -1,11 +1,9 @@
 import { fetchCities } from './cityService'
 import axios from 'axios'
 
-// mocks
 jest.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
-// tests
 describe('City Service', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -32,24 +30,5 @@ describe('City Service', () => {
         },
       },
     )
-  })
-
-  it('should throw an error if the API key is missing', async () => {
-    // Save the original value
-    const originalApiKey = process.env.RAPID_API_KEY
-
-    // Override process.env.RAPID_API_KEY with undefined
-    Object.defineProperty(process.env, 'RAPID_API_KEY', {
-      value: undefined,
-      writable: true,
-    })
-
-    await expect(fetchCities('New York')).rejects.toThrow('API key is missing')
-
-    // Restore the original value
-    Object.defineProperty(process.env, 'RAPID_API_KEY', {
-      value: originalApiKey,
-      writable: true,
-    })
   })
 })

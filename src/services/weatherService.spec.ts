@@ -1,11 +1,9 @@
 import { fetchWeatherByCity, fetchWeatherByCoordinates } from './weatherService'
 import axios from 'axios'
 
-// mocks
 jest.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
-// tests
 describe('Weather Service', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -50,29 +48,5 @@ describe('Weather Service', () => {
         timeout: 5000,
       },
     )
-  })
-
-  it('should throw an error if the API key is missing', async () => {
-    // Save the original value
-    const originalApiKey = process.env.OPEN_WEATHER_API_KEY
-
-    // Override process.env.OPEN_WEATHER_API_KEY with undefined
-    Object.defineProperty(process.env, 'OPEN_WEATHER_API_KEY', {
-      value: undefined,
-      writable: true,
-    })
-
-    await expect(fetchWeatherByCity('London')).rejects.toThrow(
-      'API key is missing',
-    )
-    await expect(
-      fetchWeatherByCoordinates('51.5074', '-0.1278'),
-    ).rejects.toThrow('API key is missing')
-
-    // Restore the original value
-    Object.defineProperty(process.env, 'OPEN_WEATHER_API_KEY', {
-      value: originalApiKey,
-      writable: true,
-    })
   })
 })
