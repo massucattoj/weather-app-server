@@ -6,7 +6,7 @@ const router = express.Router()
 /**
  * @swagger
  * /activity:
- *   get:
+ *   post:
  *     summary: Get activity suggestion based on a message
  *     description: Fetch an activity suggestion based on the user's input message.
  *     requestBody:
@@ -35,6 +35,6 @@ const router = express.Router()
  *       500:
  *         description: Internal server error
  */
-router.get('/activity', getActivitySuggestion)
+router.post('/activity', getActivitySuggestion)
 
 export default router
