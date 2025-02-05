@@ -19,6 +19,9 @@ https://weather-app-front-seven.vercel.app/
   - `GET /docs`: Api swagger
 - **Error Handling**: Handles API errors, timeouts
 
+## Todo
+- Use Zod for validation and serialization
+- Cache responses
 
 ## Setup
 

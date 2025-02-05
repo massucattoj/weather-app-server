@@ -16,13 +16,11 @@ const mockedFetchWeatherByCoordinates =
     typeof fetchWeatherByCoordinates
   >
 
-// tests
 describe('Weather Controller - getWeather', () => {
   let req: Partial<Request>
   let res: Partial<Response>
 
   beforeEach(() => {
-    // Reset mocks and create fresh request/response objects
     jest.clearAllMocks()
     req = { query: {} }
     res = {
@@ -47,10 +45,8 @@ describe('Weather Controller - getWeather', () => {
   })
 
   it('should fetch weather by coordinates', async () => {
-    // Mock request query
     req.query = { lat: '51.5074', lon: '-0.1278' }
 
-    // Mock service response
     const mockData = { name: 'London', main: { temp: 15 } }
     mockedFetchWeatherByCoordinates.mockResolvedValue(mockData)
 
@@ -78,8 +74,8 @@ describe('Weather Controller - getWeather', () => {
   it('should handle API errors', async () => {
     req.query = { city: 'London' }
 
-    // Mock service error
-    mockedFetchWeatherByCity.mockRejectedValue(new ApiError(500, 'API Error'))
+    const apiError = new ApiError(500, 'API Error')
+    mockedFetchWeatherByCity.mockRejectedValue(apiError)
 
     await getWeather(req as Request, res as Response)
 
@@ -90,14 +86,42 @@ describe('Weather Controller - getWeather', () => {
   it('should handle unexpected errors', async () => {
     req.query = { city: 'London' }
 
-    // Mock service error
-    mockedFetchWeatherByCity.mockRejectedValue(new Error('Unexpected Error'))
+    const unexpectedError = new Error('Unexpected Error')
+    mockedFetchWeatherByCity.mockRejectedValue(unexpectedError)
 
     await getWeather(req as Request, res as Response)
 
     expect(res.status).toHaveBeenCalledWith(500)
     expect(res.json).toHaveBeenCalledWith({
       message: 'An unexpected error occurred',
+    })
+  })
+
+  it('should handle missing API key error', async () => {
+    req.query = { city: 'London' }
+
+    const apiError = new ApiError(500, 'API key is missing')
+    mockedFetchWeatherByCity.mockRejectedValue(apiError)
+
+    await getWeather(req as Request, res as Response)
+
+    expect(res.status).toHaveBeenCalledWith(500)
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'API key is missing',
+    })
+  })
+
+  it('should handle timeout errors', async () => {
+    req.query = { city: 'London' }
+
+    const timeoutError = new ApiError(504, 'Request timed out')
+    mockedFetchWeatherByCity.mockRejectedValue(timeoutError)
+
+    await getWeather(req as Request, res as Response)
+
+    expect(res.status).toHaveBeenCalledWith(504)
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Request timed out',
     })
   })
 })

@@ -1,39 +1,39 @@
 import axios from 'axios'
+import { ApiError } from '../utils/apiError'
 
 const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather'
 const TIMEOUT = 5000
 
-export const fetchWeatherByCity = async (city: string) => {
+const fetchWeather = async (params: Record<string, string>) => {
   if (!process.env.OPEN_WEATHER_API_KEY) {
-    throw new Error('API key is missing')
+    throw new ApiError(500, 'API key is missing')
   }
 
-  const response = await axios.get(WEATHER_API_URL, {
-    params: {
-      q: city,
-      units: 'metric',
-      appid: process.env.OPEN_WEATHER_API_KEY,
-    },
-    timeout: TIMEOUT,
-  })
+  try {
+    const response = await axios.get(WEATHER_API_URL, {
+      params: {
+        ...params,
+        units: 'metric',
+        appid: process.env.OPEN_WEATHER_API_KEY,
+      },
+      timeout: TIMEOUT,
+    })
+    return response.data
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      throw new ApiError(
+        error.response?.status || 500,
+        error.response?.data?.message || 'Failed to fetch weather data',
+      )
+    }
+    throw new ApiError(500, 'An unexpected error occurred')
+  }
+}
 
-  return response.data
+export const fetchWeatherByCity = async (city: string) => {
+  return fetchWeather({ q: city })
 }
 
 export const fetchWeatherByCoordinates = async (lat: string, lon: string) => {
-  if (!process.env.OPEN_WEATHER_API_KEY) {
-    throw new Error('API key is missing')
-  }
-
-  const response = await axios.get(WEATHER_API_URL, {
-    params: {
-      lat,
-      lon,
-      units: 'metric',
-      appid: process.env.OPEN_WEATHER_API_KEY,
-    },
-    timeout: TIMEOUT,
-  })
-
-  return response.data
+  return fetchWeather({ lat, lon })
 }
