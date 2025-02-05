@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import weatherRoutes from './routes/weather'
+import activityRoutes from './routes/activity'
 import swaggerUi from 'swagger-ui-express'
 import citiesRoutes from './routes/cities'
 import cors from 'cors'
@@ -15,6 +16,7 @@ app.use(express.json())
 // Routes
 app.use('/api', weatherRoutes)
 app.use('/api', citiesRoutes)
+app.use('/api', activityRoutes)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 // Start
